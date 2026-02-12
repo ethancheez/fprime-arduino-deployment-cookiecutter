@@ -7,11 +7,9 @@
 #define {{cookiecutter.__deployment_name_upper}}_{{cookiecutter.__deployment_name_upper}}TOPOLOGY_HPP
 // Included for access to {{cookiecutter.deployment_name}}::TopologyState and {{cookiecutter.deployment_name}}::ConfigObjects::pingEntries. These definitions are required by the
 // autocoder, but are also used in this hand-coded topology.
-#include <{{cookiecutter.deployment_name}}/Top/{{cookiecutter.deployment_name}}TopologyDefs.hpp>
+#include <{{cookiecutter.__include_path_prefix}}{{cookiecutter.deployment_name}}/Top/{{cookiecutter.deployment_name}}TopologyDefs.hpp>
 
-// Remove unnecessary {{cookiecutter.deployment_name}}:: qualifications
-using namespace {{cookiecutter.deployment_name}};
-namespace {{cookiecutter.deployment_name}} {
+namespace {{cookiecutter.deployment_namespace}} {
 /**
  * \brief initialize and run the F´ topology
  *
@@ -34,7 +32,7 @@ namespace {{cookiecutter.deployment_name}} {
  * The state argument carries command line inputs used to setup the topology. For an explanation of the required type
  * {{cookiecutter.deployment_name}}::TopologyState see: {{cookiecutter.deployment_name}}TopologyDefs.hpp.
  *
- * \param state: object shuttling CLI arguments (hostname, port) needed to construct the topology
+ * \param state: object shuttling CLI arguments (e.g. hostname/port, or UART baudrate) needed to construct the topology
  */
 void setupTopology(const TopologyState& state);
 
@@ -53,11 +51,32 @@ void setupTopology(const TopologyState& state);
  * Step 1, 2, 3, and 4 must occur in-order as the tasks must be stopped before being joined. These tasks must be stopped
  * and joined before any active resources may be deallocated.
  *
- * For an explanation of the required type {{cookiecutter.deployment_name}}::TopologyState see: {{cookiecutter.deployment_name}}TopologyDefs.hpp.
+ * For an explanation of the required type {{cookiecutter.deployment_namespace}}::TopologyState see: {{cookiecutter.deployment_namespace}}TopologyDefs.hpp.
  *
  * \param state: state object provided to setupTopology
  */
 void teardownTopology(const TopologyState& state);
 
-} // namespace {{cookiecutter.deployment_name}}
+/**
+ * \brief cycle the rate group driver at a crude rate
+ *
+ * The reference topology does not have a true 1Hz input clock for the rate group driver because it is designed to
+ * operate across various computing endpoints (e.g. laptops) where a clear 1Hz source may not be easily and generically
+ * achieved. This function mimics the cycling via a Task::delay(milliseconds) loop that manually invokes the ISR call
+ * to the example block driver.
+ *
+ *
+ * This loop is stopped via a stopRateGroups call.
+ *
+ */
+void startRateGroups(const Fw::TimeInterval& interval = Fw::TimeInterval(1,0));
+
+/**
+ * \brief stop the rate groups 
+ *
+ * This stops the cycle started by startRateGroups.
+ */
+void stopRateGroups();
+
+} // namespace {{cookiecutter.deployment_namespace}}
 #endif

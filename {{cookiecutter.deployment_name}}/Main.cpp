@@ -4,8 +4,9 @@
 //
 // ======================================================================
 // Used to access topology functions
-#include <{{cookiecutter.deployment_name}}/Top/{{cookiecutter.deployment_name}}TopologyAc.hpp>
-#include <{{cookiecutter.deployment_name}}/Top/{{cookiecutter.deployment_name}}Topology.hpp>
+#include <{{cookiecutter.__include_path_prefix}}{{cookiecutter.deployment_name}}/Top/{{cookiecutter.deployment_name}}Topology.hpp>
+// OSAL initialization
+#include <Os/Os.hpp>
 
 // Used for Baremetal TaskRunner
 #include <fprime-baremetal/Os/TaskRunner/TaskRunner.hpp>

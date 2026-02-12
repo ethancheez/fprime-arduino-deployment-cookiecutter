@@ -4,10 +4,9 @@
 //
 // ======================================================================
 // Provides access to autocoded functions
-#include <{{cookiecutter.deployment_name}}/Top/{{cookiecutter.deployment_name}}TopologyAc.hpp>
+#include <{{cookiecutter.__include_path_prefix}}{{cookiecutter.deployment_name}}/Top/{{cookiecutter.deployment_name}}TopologyAc.hpp>
 // Note: Uncomment when using Svc:TlmPacketizer
 // #include <{{cookiecutter.deployment_name}}/Top/{{cookiecutter.deployment_name}}PacketsAc.hpp>
-#include <config/FppConstantsAc.hpp>
 #include <Fw/Logger/Logger.hpp>
 
 // Necessary project-specified types
@@ -17,8 +16,9 @@
 #include <fprime-baremetal/Os/Baremetal/MicroFs/MicroFs.hpp>
 {%- endif %}
 
-// Allows easy reference to objects in FPP/autocoder required namespaces
-using namespace {{cookiecutter.deployment_name}};
+// Public functions for use in main program are namespaced with deployment module {{cookiecutter.deployment_namespace}}
+// This is also the namespace where the topology components are instantiated by FPP.
+namespace {{cookiecutter.deployment_namespace}} {
 
 // The reference topology divides the incoming clock signal (1Hz) into sub-signals: 1/100Hz, 1/200Hz, and 1/1000Hz
 {{"Svc::RateGroupDriver::DividerSet rateGroupDivisors{{{100, 0}, {200, 0}, {1000, 0}}};"}}
@@ -26,6 +26,15 @@ using namespace {{cookiecutter.deployment_name}};
 // Rate groups may supply a context token to each of the attached children whose purpose is set by the project. The
 // reference topology sets each token to zero as these contexts are unused in this project.
 U32 rateGroup1Context[FppConstant_PassiveRateGroupOutputPorts::PassiveRateGroupOutputPorts] = {};
+
+{%- if cookiecutter.file_system_type in ["SD_Card", "MicroFS"] %}
+enum TopologyConstants {
+    FILE_DOWNLINK_TIMEOUT = 1000,      // ms
+    FILE_DOWNLINK_COOLDOWN = 500,      // ms
+    FILE_DOWNLINK_CYCLE_TIME = 100,    // ms
+    FILE_DOWNLINK_FILE_QUEUE_DEPTH = 5  // number of files
+};
+{%- endif -%}
 
 /**
  * \brief configure/setup components in project-specific way
@@ -74,8 +83,6 @@ void configureTopology() {
 {%- endif %}
 }
 
-// Public functions for use in main program are namespaced with deployment name {{cookiecutter.deployment_name}}
-namespace {{cookiecutter.deployment_name}} {
 void setupTopology(const TopologyState& state) {
     // Autocoded initialization. Function provided by autocoder.
     initComponents(state);
@@ -111,9 +118,15 @@ void setupTopology(const TopologyState& state) {
         Fw::Logger::log("[commDriver] Failed to connect to network\n");
     }
 {%- endif %}
-    
-    rateDriver.configure(1);
+}
+
+void startRateGroups(const Fw::TimeInterval& interval) {
+    rateDriver.configure(1); // TODO: change HardwareRateDriver to take Fw::TimeInterval
     rateDriver.start();
+}
+
+void stopRateGroups() {
+    rateDriver.stop();
 }
 
 void teardownTopology(const TopologyState& state) {
