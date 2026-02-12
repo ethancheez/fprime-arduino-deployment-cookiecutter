@@ -36,12 +36,13 @@ void setup() {
 {%- endif %}
 
     // Object for communicating state to the reference topology
-    {{cookiecutter.deployment_name}}::TopologyState inputs;
+    {{cookiecutter.deployment_namespace}}::TopologyState inputs;
     inputs.uartNumber = 0;
     inputs.uartBaud = 115200;
 
-    // Setup topology
-    {{cookiecutter.deployment_name}}::setupTopology(inputs);
+    // Setup and cycle topology
+    {{cookiecutter.deployment_namespace}}::setupTopology(inputs);
+    {{cookiecutter.deployment_namespace}}::startRateGroups(Fw::TimeInterval(0, 1));
 
     Fw::Logger::log("Program Started\n");
 }
