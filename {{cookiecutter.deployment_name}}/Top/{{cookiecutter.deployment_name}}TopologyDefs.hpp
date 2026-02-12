@@ -6,9 +6,6 @@
 #ifndef {{cookiecutter.__deployment_name_upper}}_{{cookiecutter.__deployment_name_upper}}TOPOLOGYDEFS_HPP
 #define {{cookiecutter.__deployment_name_upper}}_{{cookiecutter.__deployment_name_upper}}TOPOLOGYDEFS_HPP
 
-#include "Fw/Types/MallocAllocator.hpp"
-#include "{{cookiecutter.deployment_name}}/Top/FppConstantsAc.hpp"
-
 // SubtopologyTopologyDefs includes
 {%- if cookiecutter.framing_selection == "CCSDS" %}
 #include "Svc/Subtopologies/ComCcsds/SubtopologyTopologyDefs.hpp"

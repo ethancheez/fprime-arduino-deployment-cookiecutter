@@ -27,14 +27,14 @@ namespace {{cookiecutter.deployment_namespace}} {
 // reference topology sets each token to zero as these contexts are unused in this project.
 U32 rateGroup1Context[FppConstant_PassiveRateGroupOutputPorts::PassiveRateGroupOutputPorts] = {};
 
-{%- if cookiecutter.file_system_type in ["SD_Card", "MicroFS"] %}
+{% if cookiecutter.file_system_type in ["SD_Card", "MicroFS"] %}
 enum TopologyConstants {
     FILE_DOWNLINK_TIMEOUT = 1000,      // ms
     FILE_DOWNLINK_COOLDOWN = 500,      // ms
     FILE_DOWNLINK_CYCLE_TIME = 100,    // ms
     FILE_DOWNLINK_FILE_QUEUE_DEPTH = 5  // number of files
 };
-{%- endif -%}
+{%- endif %}
 
 /**
  * \brief configure/setup components in project-specific way
