@@ -4,6 +4,7 @@
 //
 // ======================================================================
 // Used to access topology functions
+#include <{{cookiecutter.__include_path_prefix}}{{cookiecutter.deployment_name}}/Top/{{cookiecutter.deployment_name}}TopologyAc.hpp>
 #include <{{cookiecutter.__include_path_prefix}}{{cookiecutter.deployment_name}}/Top/{{cookiecutter.deployment_name}}Topology.hpp>
 // OSAL initialization
 #include <Os/Os.hpp>
@@ -55,7 +56,7 @@ void setup() {
  */
 void loop() {
 #ifdef USE_BASIC_TIMER
-    rateDriver.cycle();
+    {{cookiecutter.deployment_namespace}}::rateDriver.cycle();
 #endif
     Os::Baremetal::TaskRunner::getSingleton().run();
 }
