@@ -68,6 +68,8 @@ namespace {{cookiecutter.deployment_namespace}} {
         PlatformIntType uartBaud;
     };
 
+    namespace PingEntries = ::PingEntries;
+
 }  // namespace {{cookiecutter.deployment_namespace}}
 
 

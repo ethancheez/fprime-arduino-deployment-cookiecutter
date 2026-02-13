@@ -6,7 +6,7 @@
 // Provides access to autocoded functions
 #include <{{cookiecutter.__include_path_prefix}}{{cookiecutter.deployment_name}}/Top/{{cookiecutter.deployment_name}}TopologyAc.hpp>
 // Note: Uncomment when using Svc:TlmPacketizer
-// #include <{{cookiecutter.deployment_name}}/Top/{{cookiecutter.deployment_name}}PacketsAc.hpp>
+// #include <{{cookiecutter.__include_path_prefix}}{{cookiecutter.deployment_name}}/Top/{{cookiecutter.deployment_name}}PacketsAc.hpp>
 #include <Fw/Logger/Logger.hpp>
 
 // Necessary project-specified types
